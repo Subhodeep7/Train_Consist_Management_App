@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
-// Bogie class (same as UC7)
+// Bogie class (same as previous use cases)
 class Bogie {
     private String name;
     private int capacity;
@@ -30,25 +30,35 @@ public class TrainConsistManagementApp {
 
         // Step 1: Create list of bogies
         List<Bogie> bogieList = new ArrayList<>();
+
+        // Adding multiple bogies (including duplicates for grouping demo)
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 56));
         bogieList.add(new Bogie("First Class", 24));
+        bogieList.add(new Bogie("Sleeper", 72));
+        bogieList.add(new Bogie("AC Chair", 56));
 
         // Step 2: Display original list
         System.out.println("Original Bogie List:\n");
         bogieList.forEach(System.out::println);
 
-        // Step 3: Apply Stream filtering (capacity > 60)
-        List<Bogie> filteredBogies = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
+        // Step 3: Group bogies by type (name)
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
 
-        // Step 4: Display filtered list
-        System.out.println("\nFiltered Bogies (Capacity > 60):\n");
-        filteredBogies.forEach(System.out::println);
+        // Step 4: Display grouped result
+        System.out.println("\nGrouped Bogies by Type:\n");
+
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("Bogie Type: " + entry.getKey());
+
+            for (Bogie bogie : entry.getValue()) {
+                System.out.println("   " + bogie);
+            }
+        }
 
         // Step 5: Verify original list unchanged
-        System.out.println("\nOriginal List After Filtering (Unchanged):\n");
+        System.out.println("\nOriginal List After Grouping (Unchanged):\n");
         bogieList.forEach(System.out::println);
     }
 }
